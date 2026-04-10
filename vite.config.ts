@@ -1,4 +1,4 @@
-import { cloudflareDevProxyVitePlugin as remixCloudflareDevProxy, vitePlugin as remixVitePlugin } from '@remix-run/dev';
+import { vitePlugin as remix } from '@remix-run/dev';
 import UnoCSS from 'unocss/vite';
 import { defineConfig, type ViteDevServer } from 'vite';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
@@ -11,7 +11,7 @@ dotenv.config({ path: '.env.local' });
 dotenv.config({ path: '.env' });
 dotenv.config();
 
-export default defineConfig((config) => {
+export default defineConfig(({ mode }) => {
   return {
     define: {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
@@ -57,11 +57,7 @@ export default defineConfig((config) => {
           return null;
         },
       },
-
-      // Nur lokal in Development aktivieren, NICHT auf Vercel
-      config.mode === 'development' && remixCloudflareDevProxy(),
-
-      remixVitePlugin({
+      remix({
         future: {
           v3_fetcherPersist: true,
           v3_relativeSplatPath: true,
@@ -69,12 +65,11 @@ export default defineConfig((config) => {
           v3_lazyRouteDiscovery: true,
         },
       }),
-
       UnoCSS(),
       tsconfigPaths(),
       chrome129IssuePlugin(),
-      config.mode === 'production' && optimizeCssModules({ apply: 'build' }),
-    ].filter(Boolean),
+      mode === 'production' && optimizeCssModules({ apply: 'build' }),
+    ],
 
     envPrefix: [
       'VITE_',
@@ -105,6 +100,7 @@ export default defineConfig((config) => {
     },
 
     server: {
+      host: '0.0.0.0',
       allowedHosts: true,
     },
   };
