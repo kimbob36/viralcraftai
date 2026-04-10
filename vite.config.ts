@@ -13,11 +13,6 @@ dotenv.config();
 
 export default defineConfig((config) => {
   return {
-    server: {
-      host: true,
-      allowedHosts: 'all',
-    },
-
     define: {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
     },
@@ -62,7 +57,10 @@ export default defineConfig((config) => {
           return null;
         },
       },
-      config.mode !== 'test' && remixCloudflareDevProxy(),
+
+      // Nur lokal in Development aktivieren, NICHT auf Vercel
+      config.mode === 'development' && remixCloudflareDevProxy(),
+
       remixVitePlugin({
         future: {
           v3_fetcherPersist: true,
@@ -71,11 +69,12 @@ export default defineConfig((config) => {
           v3_lazyRouteDiscovery: true,
         },
       }),
+
       UnoCSS(),
       tsconfigPaths(),
       chrome129IssuePlugin(),
       config.mode === 'production' && optimizeCssModules({ apply: 'build' }),
-    ],
+    ].filter(Boolean),
 
     envPrefix: [
       'VITE_',
@@ -103,6 +102,10 @@ export default defineConfig((config) => {
         '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build}.config.*',
         '**/tests/preview/**',
       ],
+    },
+
+    server: {
+      allowedHosts: true,
     },
   };
 });
