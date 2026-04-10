@@ -96,8 +96,7 @@
     "@radix-ui/react-switch": "^1.1.1",
     "@radix-ui/react-tabs": "^1.1.2",
     "@radix-ui/react-tooltip": "^1.1.4",
-    "@remix-run/cloudflare": "^2.15.2",
-    "@remix-run/cloudflare-pages": "^2.15.2",
+  
     "@remix-run/node": "^2.15.2",
     "@remix-run/react": "^2.15.2",
     "@tanstack/react-virtual": "^3.13.0",
@@ -206,7 +205,7 @@
     "vite-plugin-optimize-css-modules": "^1.1.0",
     "vite-tsconfig-paths": "^4.3.2",
     "vitest": "^2.1.7",
-    "wrangler": "^4.44.0"
+  
   },
   "resolutions": {
     "@typescript-eslint/utils": "^8.0.0-alpha.30"
