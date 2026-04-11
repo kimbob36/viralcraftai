@@ -18,11 +18,14 @@ export default defineConfig(({ mode }) => {
     },
 
     resolve: {
-      alias: {
-        path: 'path-browserify',
-        crypto: 'crypto-browserify',
-        'node:crypto': 'crypto-browserify',
-      },
+      alias: [
+        { find: /^util\/types$/, replacement: 'node:util/types' },
+        { find: /^util\/(.*)$/, replacement: 'node:util/$1' },
+        { find: /^util$/, replacement: 'node:util' },
+        { find: /^path$/, replacement: 'path-browserify' },
+        { find: /^crypto$/, replacement: 'crypto-browserify' },
+        { find: /^node:crypto$/, replacement: 'crypto-browserify' },
+      ],
     },
 
     optimizeDeps: {
