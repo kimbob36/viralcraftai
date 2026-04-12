@@ -1,8 +1,8 @@
 import { type ActionFunctionArgs } from '@remix-run/node';
 
 import { createScopedLogger } from '~/utils/logger';
-import { MCPService } from '~/lib/.server/mcpService';
-import type { MCPConfig } from '~/lib/mcp/mcpConfig';
+import { MCPService } from '~/lib/.server/llm/mcpService';
+import type { MCPConfig } from '~/lib/mcpConfig';
 
 const logger = createScopedLogger('api.mcp-update-config');
 
