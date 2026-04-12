@@ -1,6 +1,8 @@
 import { type ActionFunctionArgs } from '@remix-run/node';
+
 import { createScopedLogger } from '~/utils/logger';
-import { MCPService, type MCPConfig } from '~/lib/services/mcpService';
+import { MCPService } from '~/lib/.server/mcpService';
+import type { MCPConfig } from '~/lib/mcp/mcpConfig';
 
 const logger = createScopedLogger('api.mcp-update-config');
 
@@ -17,7 +19,8 @@ export async function action({ request }: ActionFunctionArgs) {
 
     return Response.json(serverTools);
   } catch (error) {
-    logger.error('Error updating MCP config:', error);
-    return Response.json({ error: 'Failed to update MCP config' }, { status: 500 });
+    logger.error('Error updating MCP servers configuration:', error);
+
+    return Response.json({ error: 'Failed to update MCP servers configuration' }, { status: 500 });
   }
 }
