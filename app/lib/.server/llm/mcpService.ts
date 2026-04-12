@@ -25,7 +25,7 @@ import {
   type STDIOServerConfig,
   type SSEServerConfig,
   type StreamableHTTPServerConfig,
-} from '~/lib/mcp/mcpConfig';
+} from '~/lib/mcpConfig';
 
 const logger = createScopedLogger('mcp-service');
 
@@ -82,7 +82,7 @@ export class MCPService {
     const hasUrlField = config.url !== undefined;
 
     if (hasStdioField && hasUrlField) {
-      throw new Error(`cannot have "command" and "url" defined for the same server.`);
+      throw new Error('cannot have "command" and "url" defined for the same server.');
     }
 
     if (!config.type && hasStdioField) {
@@ -90,21 +90,21 @@ export class MCPService {
     }
 
     if (hasUrlField && !config.type) {
-      throw new Error(`missing "type" field, only "sse" and "streamable-http" are valid options.`);
+      throw new Error('missing "type" field, only "sse" and "streamable-http" are valid options.');
     }
 
     if (!['stdio', 'sse', 'streamable-http'].includes(config.type)) {
       throw new Error(
-        `provided "type" is invalid, only "stdio", "sse" or "streamable-http" are valid options.`,
+        'provided "type" is invalid, only "stdio", "sse" or "streamable-http" are valid options.',
       );
     }
 
     if (config.type === 'stdio' && !hasStdioField) {
-      throw new Error(`missing "command" field.`);
+      throw new Error('missing "command" field.');
     }
 
     if (['sse', 'streamable-http'].includes(config.type) && !hasUrlField) {
-      throw new Error(`missing "url" field.`);
+      throw new Error('missing "url" field.');
     }
 
     try {
