@@ -1,5 +1,5 @@
 import { json } from '@remix-run/node';
-import { LLMManager } from '~/lib/modules/llm/manager';
+
 import type { ModelInfo } from '~/lib/modules/llm/types';
 import type { ProviderInfo } from '~/types/model';
 import { getApiKeysFromCookie, getProviderSettingsFromCookie } from '~/lib/api/cookies';
@@ -13,9 +13,9 @@ interface ModelsResponse {
 let cachedProviders: ProviderInfo[] | null = null;
 let cachedDefaultProvider: ProviderInfo | null = null;
 
-function getProviderInfo(llmManager: LLMManager) {
+function getProviderInfo(llmManager: any) {
   if (!cachedProviders) {
-    cachedProviders = llmManager.getAllProviders().map((provider) => ({
+    cachedProviders = llmManager.getAllProviders().map((provider: any) => ({
       name: provider.name,
       staticModels: provider.staticModels,
       getApiKeyLink: provider.getApiKeyLink,
@@ -26,6 +26,7 @@ function getProviderInfo(llmManager: LLMManager) {
 
   if (!cachedDefaultProvider) {
     const defaultProvider = llmManager.getDefaultProvider();
+
     cachedDefaultProvider = {
       name: defaultProvider.name,
       staticModels: defaultProvider.staticModels,
@@ -51,9 +52,9 @@ export async function loader({
     };
   };
 }): Promise<Response> {
+  const { LLMManager } = await import('~/lib/modules/llm/manager');
   const llmManager = LLMManager.getInstance(context.cloudflare?.env);
 
-  // Get client side maintained API keys and provider settings from cookies
   const cookieHeader = request.headers.get('Cookie');
   const apiKeys = getApiKeysFromCookie(cookieHeader);
   const providerSettings = getProviderSettingsFromCookie(cookieHeader);
@@ -63,7 +64,6 @@ export async function loader({
   let modelList: ModelInfo[] = [];
 
   if (params.provider) {
-    // Only update models for the specific provider
     const provider = llmManager.getProvider(params.provider);
 
     if (provider) {
@@ -74,7 +74,6 @@ export async function loader({
       });
     }
   } else {
-    // Update all models
     modelList = await llmManager.updateModelList({
       apiKeys,
       providerSettings,
