@@ -1,5 +1,5 @@
 import { createScopedLogger } from '~/utils/logger';
-import { MCPService } from '~/lib/services/mcpService';
+import { MCPService } from '~/lib/.server/mcpService';
 
 const logger = createScopedLogger('api.mcp-check');
 
@@ -11,6 +11,7 @@ export async function loader() {
     return Response.json(serverTools);
   } catch (error) {
     logger.error('Error checking MCP servers:', error);
+
     return Response.json({ error: 'Failed to check MCP servers' }, { status: 500 });
   }
 }
